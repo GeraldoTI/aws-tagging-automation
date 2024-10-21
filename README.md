@@ -43,3 +43,24 @@ Este pipeline utiliza o AWS CodePipeline para automatizar o processo de tagueame
 - Controle de Acesso e Permissões
 - Uso de Recursos Provisórios
 - Gerenciamento de Risco de Segurança
+
+
+## Automação da Extração de Relatórios Financeiros
+A automação deste projeto não se limita apenas ao provisionamento e tagueamento de recursos; ela também facilita a extração de relatórios financeiros. Após a implementação do pipeline, os seguintes processos garantem que as informações financeiras sejam coletadas de maneira eficiente:
+
+1. **AWS Cost Explorer**: 
+   - O AWS Cost Explorer é integrado para fornecer relatórios detalhados sobre os gastos. Ele analisa os dados de uso e custo, permitindo que você visualize onde os recursos estão sendo alocados.
+   - Relatórios podem ser programados para serem gerados em intervalos regulares, como semanal ou mensalmente.
+
+2. **AWS Budgets**:
+   - Os orçamentos configurados no AWS Budgets monitoram os gastos em tempo real e enviam alertas quando os custos se aproximam do limite estabelecido.
+   - Isso não só ajuda a evitar surpresas no final do mês, mas também permite que você tome decisões informadas sobre a alocação de recursos.
+
+3. **Relatórios Automatizados**:
+   - Scripts ou funções Lambda podem ser criados para extrair automaticamente relatórios financeiros a partir do Cost Explorer e enviá-los por e-mail ou armazená-los em um bucket S3.
+   - Isso garante que as partes interessadas tenham acesso rápido e fácil às informações financeiras relevantes, permitindo uma análise mais eficaz e tempestiva.
+
+4. **Integração com ferramentas de BI**:
+   - Os dados extraídos podem ser integrados a ferramentas de Business Intelligence (BI) como Tableau ou Power BI para análises mais aprofundadas, visualizações interativas e dashboards personalizados.
+
+Esses processos de automação não apenas aumentam a eficiência, mas também melhoram a transparência e o controle sobre os custos operacionais na AWS.
