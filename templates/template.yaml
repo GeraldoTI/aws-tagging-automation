@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Provisionamento de Aplicação com Tagueamento
+
+Resources:
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: lambda_function.lambda_handler
+      Role: arn:aws:iam::YOUR_ACCOUNT_ID:role/YOUR_LAMBDA_ROLE
+      Code:
+        ZipFile: |
+          import json
+          import boto3
+
+          def lambda_handler(event, context):
+              # Tagueamento aqui
+      Runtime: python3.8
+      Timeout: 30
+
+  # Outros recursos como EC2, RDS, S3...

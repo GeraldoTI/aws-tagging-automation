@@ -1,0 +1,77 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Pipeline de Automação de Tagueamento com Guardrails
+
+Resources:
+  TaggingPipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: TagueamentoPipeline
+      RoleArn: arn:aws:iam::YOUR_ACCOUNT_ID:role/YOUR_CODEPIPELINE_ROLE
+      ArtifactStore:
+        Type: S3
+        Location: YOUR_S3_BUCKET
+      Stages:
+        - Name: ValidateTags
+          Actions:
+            - Name: ValidateTagging
+              ActionTypeId:
+                Category: Test
+                Owner: AWS
+                Provider: Lambda
+                Version: 1
+              InputArtifacts: []
+              OutputArtifacts: []
+              Configuration:
+                FunctionName: ValidateTagsFunction
+
+        - Name: ApplyTags
+          Actions:
+            - Name: TagResources
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: Lambda
+                Version: 1
+              InputArtifacts: []
+              OutputArtifacts: []
+              Configuration:
+                FunctionName: TagResourcesFunction
+
+        - Name: BudgetCheck
+          Actions:
+            - Name: CheckBudget
+              ActionTypeId:
+                Category: Invoke
+                Owner: AWS
+                Provider: Lambda
+                Version: 1
+              InputArtifacts: []
+              OutputArtifacts: []
+              Configuration:
+                FunctionName: CheckBudgetFunction
+
+        - Name: ComplianceCheck
+          Actions:
+            - Name: ComplianceVerification
+              ActionTypeId:
+                Category: Test
+                Owner: AWS
+                Provider: Lambda
+                Version: 1
+              InputArtifacts: []
+              OutputArtifacts: []
+              Configuration:
+                FunctionName: ComplianceCheckFunction
+
+        - Name: SecurityReview
+          Actions:
+            - Name: ReviewSecurity
+              ActionTypeId:
+                Category: Test
+                Owner: AWS
+                Provider: Lambda
+                Version: 1
+              InputArtifacts: []
+              OutputArtifacts: []
+              Configuration:
+                FunctionName: ReviewSecurityFunction
