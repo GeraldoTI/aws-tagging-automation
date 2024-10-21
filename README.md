@@ -70,5 +70,3 @@ Este projeto demonstra como provisionar uma aplicação na AWS com um orçamento
 - **Automação Total**: O projeto visa automatizar todo o processo de provisionamento, tagueamento, monitoramento de custos e compliance. Isso garante eficiência e minimiza erros humanos.
 - **Relatórios**: Utilize o AWS Cost Explorer para extrair relatórios sobre gastos e monitorar se as tags estão sendo aplicadas corretamente. Isso proporciona uma visão clara e em tempo real dos custos associados a cada recurso.
 
-## **Conclusão**
-Após seguir este guia, seu repositório estará configurado com todos os arquivos necessários para o projeto de tagueamento automatizado na AWS, com guardrails implementados para garantir conformidade e controle financeiro. Este projeto não só demonstra a implementação de boas práticas em cloud computing, mas também oferece uma base sólida para a escalabilidade e gestão eficiente de recursos na nuvem.
