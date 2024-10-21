@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Pipeline para Tagueamento Automático de Recursos na AWS'
+
+Resources:
+  # Recurso do CodePipeline
+  CodePipeline:
+    Type: 'AWS::CodePipeline::Pipeline'
+    Properties:
+      Name: 'TaggingPipeline'
+      RoleArn: !GetAtt CodePipelineRole.Arn
+      ArtifactStore:
+        Type: 'S3'
+        Location: !Ref PipelineArtifactBucket
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: SourceAction
+              ActionTypeId:
+                Category: 'Source'
+                Owner: 'AWS'
+                Provider: 'CodeCommit'
+                Version: '1'
+              OutputArtifacts:
+                - Name: SourceOutput
+              Configuration:
+                RepositoryName: 'nome-do-repositorio'
+                BranchName: 'main'
+
+        - Name: Build
+          Actions:
+            - Name: BuildAction
+              ActionTypeId:
+                Category: 'Build'
+                Owner: 'AWS'
+                Provider: 'CodeBuild'
+                Version: '1'
+              InputArtifacts:
+                - Name: SourceOutput
+              OutputArtifacts:
+                - Name: BuildOutput
+              Configuration:
+                ProjectName: !Ref CodeBuildProject
+
+        - Name: Deploy
+          Actions:
+            - Name: DeployAction
+              ActionTypeId:
+                Category: 'Deploy'
+                Owner: 'AWS'
+                Provider: 'Lambda'
+                Version: '1'
+              InputArtifacts:
+                - Name: BuildOutput
+              Configuration:
+                FunctionName: 'nome-da-funcao-lambda'
+                UserParameters: '{}'
+
+        - Name: Tagging
+          Actions:
+            - Name: TaggingAction
+              ActionTypeId:
+                Category: 'Invoke'
+                Owner: 'AWS'
+                Provider: 'Lambda'
+                Version: '1'
+              Configuration:
+                FunctionName: 'nome-da-funcao-lambda'

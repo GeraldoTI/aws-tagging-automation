@@ -1,26 +1,24 @@
-import json
 import boto3
+import os
 
 def lambda_handler(event, context):
+    # Captura os recursos que precisam ser tagueados
+    resource_ids = event.get('resource_ids', [])
+    
     ec2 = boto3.client('ec2')
-    rds = boto3.client('rds')
     
-    # Tagueamento de Instância EC2
-    ec2.create_tags(Resources=[event['ec2_instance_id']], Tags=[
-        {'Key': 'Project', 'Value': 'TaggingDemo'},
-        {'Key': 'CostCenter', 'Value': '10000'}
-    ])
-    
-    # Tagueamento de Instância RDS
-    rds.add_tags_to_resource(
-        ResourceName=event['rds_instance_arn'],
-        Tags=[
-            {'Key': 'Project', 'Value': 'TaggingDemo'},
-            {'Key': 'CostCenter', 'Value': '10000'}
-        ]
-    )
-
+    # Aplica tags em cada recurso
+    for resource_id in resource_ids:
+        ec2.create_tags(
+            Resources=[resource_id],
+            Tags=[
+                {'Key': 'Project', 'Value': 'Nome do Projeto'},
+                {'Key': 'Owner', 'Value': 'Seu Nome'},
+                {'Key': 'Environment', 'Value': 'Produção'}
+            ]
+        )
+        
     return {
         'statusCode': 200,
-        'body': json.dumps('Tags aplicadas com sucesso!')
+        'body': 'Tags aplicadas com sucesso!'
     }
