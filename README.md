@@ -64,3 +64,7 @@ A automação deste projeto não se limita apenas ao provisionamento e tagueamen
    - Os dados extraídos podem ser integrados a ferramentas de Business Intelligence (BI) como Tableau ou Power BI para análises mais aprofundadas, visualizações interativas e dashboards personalizados.
 
 Esses processos de automação não apenas aumentam a eficiência, mas também melhoram a transparência e o controle sobre os custos operacionais na AWS.
+
+Referencia.
+
+https://aws.amazon.com/pt/blogs/architecture/lets-architect-cost-optimizing-aws-workloads/
