@@ -1,70 +1,40 @@
 # Projeto de Tagueamento Automatizado na AWS
 
 ## Objetivo
-Este projeto demonstra como provisionar uma aplicação na AWS com um orçamento de US$ 10.000, garantindo que todos os recursos estejam devidamente tagueados para controle financeiro.
+Este projeto tem como objetivo automatizar o provisionamento de recursos na AWS com um orçamento de US$ 10.000, garantindo que todos os recursos estejam devidamente tagueados para controle financeiro. A implementação de **guardrails** é essencial para garantir a conformidade e a segurança da infraestrutura.
 
-## Estrutura do Projeto
-- `architecture/`: Diagrama da arquitetura.
-- `lambda/tagging/lambda_function.py`: Função Lambda para tagueamento.
-- `lambda/buildspec.yml`: Configuração de build para a Lambda.
-- `templates/template.yaml`: Modelo CloudFormation para provisionamento dos recursos.
-- `templates/pipeline.yaml`: Definição do pipeline de CI/CD.
+## Guardrails Implementados
 
-## Passo a Passo para Implementação
-1. **Configuração da Função Lambda**
-   - Objetivo: Criar uma função Lambda que aplica tags nos recursos.
-   - Implementação: Faça o upload do código da função em `lambda/tagging/lambda_function.py`.
+### 1. **Validação de Tags em Tempo de Criação**
+**Descrição**: Este guardrail garante que todas as tags obrigatórias estejam presentes antes da criação de qualquer recurso na AWS.  
+**Como Funciona**: Uma função Lambda é acionada durante o processo de criação de um recurso. Essa função verifica se as tags necessárias foram fornecidas e rejeita a criação se alguma delas estiver faltando. Isso ajuda a evitar a criação de recursos descontrolados e não rastreados.
 
-2. **Provisionamento dos Recursos**
-   - Objetivo: Usar o AWS CloudFormation para provisionar instâncias EC2 e RDS.
-   - Implementação: Execute o modelo CloudFormation localizado em `templates/template.yaml`.
+### 2. **Orçamento e Limite de Gastos**
+**Descrição**: Este guardrail define orçamentos que monitoram os gastos em tempo real e alertam os usuários quando um limite específico é atingido.  
+**Como Funciona**: Utilizando o AWS Budgets, configuramos alertas que notificam os responsáveis sobre o uso financeiro, permitindo intervenções proativas antes que o orçamento seja excedido.
 
-3. **Configuração do Pipeline de CI/CD**
-   - Objetivo: Automatizar o processo de build e deploy.
-   - Implementação: Utilize o arquivo `templates/pipeline.yaml` para definir o pipeline no AWS CodePipeline.
+### 3. **Auditoria de Recursos Tagueados**
+**Descrição**: Garante que todos os recursos provisionados estejam em conformidade com as políticas de tagueamento.  
+**Como Funciona**: Uma função Lambda é programada para realizar auditorias periódicas, verificando se as tags exigidas estão aplicadas a todos os recursos. Isso assegura a conformidade contínua com as diretrizes de governança.
 
-4. **Monitoramento de Custos**
-   - Objetivo: Monitorar os custos utilizando AWS Budgets e Cost Explorer.
-   - Implementação: Configure orçamentos no AWS Budgets para alertar quando os custos se aproximarem de US$ 10.000.
+### 4. **Regras de Compliance**
+**Descrição**: Este guardrail assegura que todos os recursos estejam alinhados com as políticas de segurança e governança definidas pela organização.  
+**Como Funciona**: O AWS Config é utilizado para monitorar as configurações dos recursos e emitir alertas quando as regras de compliance não são atendidas, facilitando a manutenção da integridade da infraestrutura.
 
-## Pipeline de Tagueamento Automatizado
-Este pipeline utiliza o AWS CodePipeline para automatizar o processo de tagueamento de recursos na AWS. O pipeline é composto pelas seguintes etapas:
+### 5. **Controle de Acesso e Permissões**
+**Descrição**: Garante que apenas usuários autorizados possam executar ações críticas na infraestrutura.  
+**Como Funciona**: Políticas de IAM (Identity and Access Management) são implementadas para restringir o acesso, definindo permissões granulares que ajudam a proteger recursos sensíveis.
 
-1. **Source**: Captura alterações no repositório de código.
-2. **Build**: Compila o código da função Lambda e prepara para implantação.
-3. **Deploy**: Implanta a função Lambda e suas permissões necessárias.
-4. **Tagging**: Executa a função Lambda que aplica tags aos recursos.
+### 6. **Uso de Recursos Provisórios**
+**Descrição**: Ajuda a identificar e remover recursos não utilizados, evitando desperdício.  
+**Como Funciona**: Scripts automatizados verificam periodicamente o uso dos recursos e sugerem ações para descontinuar aqueles que não estão em uso, contribuindo para uma gestão financeira mais eficiente.
 
-## Tipos de Guardrails Utilizados
-- Validação de Tags em Tempo de Criação
-- Orçamento e Limite de Gastos
-- Auditoria de Recursos Tagueados
-- Regras de Compliance
-- Controle de Acesso e Permissões
-- Uso de Recursos Provisórios
-- Gerenciamento de Risco de Segurança
+### 7. **Gerenciamento de Risco de Segurança**
+**Descrição**: Protege recursos expostos a vulnerabilidades conhecidas.  
+**Como Funciona**: O AWS Inspector realiza varreduras regulares para identificar falhas de segurança e fornece relatórios que ajudam na remediação rápida.
 
+## Conclusão
+Este projeto de tagueamento automatizado na AWS não apenas promove a eficiência operacional, mas também estabelece um conjunto robusto de guardrails que garantem conformidade e segurança. A automação do processo de provisionamento e tagueamento, juntamente com práticas de monitoramento financeiro, garante que a infraestrutura esteja alinhada com as melhores práticas de governança. Ao seguir este guia, você estará bem equipado para gerenciar recursos na nuvem de forma eficaz e segura.
 
-## Automação da Extração de Relatórios Financeiros
-A automação deste projeto não se limita apenas ao provisionamento e tagueamento de recursos; ela também facilita a extração de relatórios financeiros. Após a implementação do pipeline, os seguintes processos garantem que as informações financeiras sejam coletadas de maneira eficiente:
-
-1. **AWS Cost Explorer**: 
-   - O AWS Cost Explorer é integrado para fornecer relatórios detalhados sobre os gastos. Ele analisa os dados de uso e custo, permitindo que você visualize onde os recursos estão sendo alocados.
-   - Relatórios podem ser programados para serem gerados em intervalos regulares, como semanal ou mensalmente.
-
-2. **AWS Budgets**:
-   - Os orçamentos configurados no AWS Budgets monitoram os gastos em tempo real e enviam alertas quando os custos se aproximam do limite estabelecido.
-   - Isso não só ajuda a evitar surpresas no final do mês, mas também permite que você tome decisões informadas sobre a alocação de recursos.
-
-3. **Relatórios Automatizados**:
-   - Scripts ou funções Lambda podem ser criados para extrair automaticamente relatórios financeiros a partir do Cost Explorer e enviá-los por e-mail ou armazená-los em um bucket S3.
-   - Isso garante que as partes interessadas tenham acesso rápido e fácil às informações financeiras relevantes, permitindo uma análise mais eficaz e tempestiva.
-
-4. **Integração com ferramentas de BI**:
-   - Os dados extraídos podem ser integrados a ferramentas de Business Intelligence (BI) como Tableau ou Power BI para análises mais aprofundadas, visualizações interativas e dashboards personalizados.
-
-Esses processos de automação não apenas aumentam a eficiência, mas também melhoram a transparência e o controle sobre os custos operacionais na AWS.
-
-Referencia.
 
 https://aws.amazon.com/pt/blogs/architecture/lets-architect-cost-optimizing-aws-workloads/
